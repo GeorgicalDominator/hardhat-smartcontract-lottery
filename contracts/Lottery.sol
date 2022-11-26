@@ -3,7 +3,7 @@ pragma solidity ^0.8.17;
 
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
-import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/AutomationCompatibleInterface.sol";
 
 error Lottery__NotEnoughETHEntered();
 error Lottery__TransferFailed();
@@ -15,7 +15,7 @@ error Lottery__UpkeepNotNeeded(uint256 currentBalance, uint256 numPlayers, uint2
  *  @dev This implements Chainlink VRF v2 and Chainlink Keepers 
  */
 
-contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
+contract Lottery is VRFConsumerBaseV2, AutomationCompatibleInterface{
 
     enum LotteryState{
         OPEN,
@@ -102,7 +102,11 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
         emit WinnerPicked (recentWinner);
     }
 
-    function getEnteranceFee(uint256 i_enteranceFee) public view returns (uint256) {
+    function getSubscriptionId() public view returns(uint64) {
+        return i_subscriptionId;
+    }
+
+    function getEnteranceFee() public view returns (uint256) {
         return i_enteranceFee;
     }
 
